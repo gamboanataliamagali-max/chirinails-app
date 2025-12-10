@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chiri Nails – Turnos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Poppins, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f7eaff, #ffe5f6, #fce9ff);
+      padding: 20px;
+    }
+
+    .app {
+      background: #ffffffee;
+      border-radius: 20px;
+      padding: 20px 18px 22px;
+      max-width: 450px;
+      width: 100%;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.10);
+      backdrop-filter: blur(8px);
+    }
+
+    .logo {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      margin: 0 auto 6px;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #8a52ff;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #444;
+      margin-bottom: 10px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid #d4c7ff;
+      padding: 8px 10px;
+      font-size: 0.86rem;
+      background: #f4f0ff;
+      cursor: pointer;
+      font-weight: 600;
+      color: #5d4a99;
+      transition: 0.15s;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #b497ff, #8a52ff);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 5px 16px rgba(138, 82, 255, 0.35);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #444;
+      text-align: left;
+      margin-bottom: 3px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid #d4c7ff;
+      font-size: 0.95rem;
+      background: #faf8ff;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #b497ff;
+      background: #fff;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .row > div {
+      flex: 1;
+    }
+
+    .btn-primary {
+      padding: 12px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #b497ff, #8a52ff);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      box-shadow: 0 8px 20px rgba(138, 82, 255, 0.35);
+      transition: 0.15s;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(138, 82, 255, 0.45);
+    }
+
+    .note {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: #666;
+      text-align: center;
+    }
+
+    /* ADMIN */
+    #adminPanel {
+      display: none;
+      margin-top: 4px;
+    }
+
+    .admin-info {
+      font-size: 0.8rem;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      margin-top: 6px;
+    }
+
+    th, td {
+      padding: 6px 4px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 700;
+      color: #5d4a99;
+      background: #f6f2ff;
+    }
+
+    .estado-pill {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .pendiente {
+      background: #fff1c7;
+      color: #846000;
+    }
+
+    .hecho {
+      background: #d9ffe1;
+      color: #116f3d;
+    }
+
+    .btn-mini {
+      border: none;
+      border-radius: 999px;
+      padding: 3px 7px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      margin-right: 4px;
+    }
+
+    .btn-ok {
+      background: #d9ffe1;
+      color: #116f3d;
+    }
+
+    .btn-del {
+      background: #ffe0e0;
+      color: #a02222;
+    }
+
+    .no-turnos {
+      font-size: 0.8rem;
+      color: #777;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <img src="logo.png" class="logo" alt="Chiri Nails Logo" />
+
+    <div class="title">Chiri Nails</div>
+    <div class="subtitle">Agenda de turnos 💅✨</div>
+
+    <div class="tabs">
+      <button class="tab-btn active" id="tabTurnos">Pedir turno</button>
+      <button class="tab-btn" id="tabAdmin">Panel Chiri (admin)</button>
+    </div>
+
+    <!-- TAB PEDIR TURNO -->
+    <div id="turnoView">
+      <form id="turnoForm">
+        <div>
+          <label>Nombre y apellido *</label>
+          <input type="text" id="nombre" placeholder="Ej: Ana Pérez" required />
+        </div>
+
+        <div>
+          <label>WhatsApp *</label>
+          <input type="tel" id="whatsapp" placeholder="Ej: 11 1234 5678" required />
+        </div>
+
+        <div>
+          <label>Servicio *</label>
+          <select id="servicio" required>
+            <option value="">Elegí una opción</option>
+            <option value="Soft Gel">Soft Gel</option>
+            <option value="Kapping">Kapping</option>
+            <option value="Semipermanente">Semipermanente</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Fecha *</label>
+            <input type="date" id="fecha" required />
+          </div>
+          <div>
+            <label>Hora *</label>
+            <input type="time" id="hora" required />
+          </div>
+        </div>
+
+        <div>
+          <label>Notas (opcional)</label>
+          <textarea id="notas" placeholder="Ej: diseño, color, preferencia, etc."></textarea>
+        </div>
+
+        <button class="btn-primary" type="submit">Enviar por WhatsApp</button>
+
+        <div class="note">
+          Atiende por la mañana en su domicilio. Consultar turnos de fin de semana 🌸
+        </div>
+      </form>
+    </div>
+
+    <!-- TAB ADMIN -->
+    <div id="adminPanel">
+      <div class="admin-info">
+        Panel privado para Magui. Acá ve los turnos que se fueron cargando desde esta app
+        (en este mismo celu o compu). 💜
+      </div>
+
+      <div id="turnosContainer"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // ---------- TABS ----------
+    const tabTurnos = document.getElementById("tabTurnos");
+    const tabAdmin = document.getElementById("tabAdmin");
+    const turnoView = document.getElementById("turnoView");
+    const adminPanel = document.getElementById("adminPanel");
+
+    tabTurnos.addEventListener("click", () => {
+      tabTurnos.classList.add("active");
+      tabAdmin.classList.remove("active");
+      turnoView.style.display = "block";
+      adminPanel.style.display = "none";
+    });
+
+    tabAdmin.addEventListener("click", () => {
+      tabAdmin.classList.add("active");
+      tabTurnos.classList.remove("active");
+      turnoView.style.display = "none";
+      adminPanel.style.display = "block";
+      renderTurnos();
+    });
+
+    // ---------- STORAGE ----------
+    const STORAGE_KEY = "chiri_turnos";
+
+    function obtenerTurnos() {
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    }
+
+    function guardarTurnos(turnos) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(turnos));
+    }
+
+    // ---------- FORMULARIO ----------
+    document.getElementById("turnoForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById("nombre").value.trim();
+      const whatsappCliente = document.getElementById("whatsapp").value.trim();
+      const servicio = document.getElementById("servicio").value;
+      const fecha = document.getElementById("fecha").value;
+      const hora = document.getElementById("hora").value;
+      const notas = document.getElementById("notas").value.trim();
+
+      if (!nombre || !whatsappCliente || !servicio || !fecha || !hora) {
+        alert("Por favor, completá todos los campos obligatorios.");
+        return;
+      }
+
+      // Guardar en "base de datos" local (localStorage)
+      const turnos = obtenerTurnos();
+      const nuevoTurno = {
+        id: Date.now(),
+        nombre,
+        whatsappCliente,
+        servicio,
+        fecha,
+        hora,
+        notas,
+        estado: "pendiente",
+        creado: new Date().toISOString()
+      };
+      turnos.push(nuevoTurno);
+      guardarTurnos(turnos);
+
+      // Enviar a WhatsApp de Magui
+      const telefonoMagui = "5491132485240";
+
+      const mensaje =
+        "Hola Magui! 💅%0A%0A" +
+        "Nueva solicitud de turno desde la app de *Chiri Nails*:%0A%0A" +
+        "*Nombre:* " + encodeURIComponent(nombre) + "%0A" +
+        "*WhatsApp cliente:* " + encodeURIComponent(whatsappCliente) + "%0A" +
+        "*Servicio:* " + encodeURIComponent(servicio) + "%0A" +
+        "*Fecha:* " + encodeURIComponent(fecha) + "%0A" +
+        "*Hora:* " + encodeURIComponent(hora) + "%0A" +
+        (notas ? "*Notas:* " + encodeURIComponent(notas) + "%0A" : "") +
+        "%0A¿Confirmamos el horario? ✨";
+
+      const url = "https://wa.me/" + telefonoMagui + "?text=" + mensaje;
+      window.open(url, "_blank");
+
+      // Limpiar formulario
+      this.reset();
+      alert("Turno enviado por WhatsApp y guardado en el panel de Chiri ✅");
+    });
+
+    // ---------- PANEL ADMIN ----------
+    function renderTurnos() {
+      const container = document.getElementById("turnosContainer");
+      const turnos = obtenerTurnos();
+
+      if (!turnos.length) {
+        container.innerHTML = '<div class="no-turnos">Todavía no hay turnos guardados.</div>';
+        return;
+      }
+
+      // Ordenar por fecha/hora
+      turnos.sort((a, b) => {
+        const dA = a.fecha + " " + a.hora;
+        const dB = b.fecha + " " + b.hora;
+        return dA.localeCompare(dB);
+      });
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Nombre</th>
+              <th>Serv.</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      for (const t of turnos) {
+        html += `
+          <tr>
+            <td>${t.fecha}<br><small>${t.hora}</small></td>
+            <td>
+              ${t.nombre}<br>
+              <small>${t.whatsappCliente}</small>
+              ${t.notas ? `<br><small>Notas: ${t.notas}</small>` : ""}
+            </td>
+            <td>${t.servicio}</td>
+            <td>
+              <span class="estado-pill ${t.estado === "hecho" ? "hecho" : "pendiente"}">
+                ${t.estado === "hecho" ? "Hecho" : "Pendiente"}
+              </span>
+            </td>
+            <td>
+              <button class="btn-mini btn-ok" onclick="marcarHecho(${t.id})">✔</button>
+              <button class="btn-mini btn-del" onclick="borrarTurno(${t.id})">🗑</button>
+            </td>
+          </tr>
+        `;
+      }
+
+      html += "</tbody></table>";
+      container.innerHTML = html;
+    }
+
+    window.marcarHecho = function(id) {
+      const turnos = obtenerTurnos();
+      const idx = turnos.findIndex(t => t.id === id);
+      if (idx !== -1) {
+        turnos[idx].estado = "hecho";
+        guardarTurnos(turnos);
+        renderTurnos();
+      }
+    };
+
+    window.borrarTurno = function(id) {
+      if (!confirm("¿Seguro que querés borrar este turno?")) return;
+      let turnos = obtenerTurnos();
+      turnos = turnos.filter(t => t.id !== id);
+      guardarTurnos(turnos);
+      renderTurnos();
+    };
+  </script>
+</body>
+</html>
